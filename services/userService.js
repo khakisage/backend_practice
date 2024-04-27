@@ -38,6 +38,7 @@ const userService = {
   async login(params) {
     let tokenResult = null;
     let selectedUserInfo = null;
+    let response = null;
     try {
       selectedUserInfo = await userDao.selectUser(params);
       if (!selectedUserInfo) {
@@ -76,6 +77,12 @@ const userService = {
         role: selectedUserInfo.role,
       });
       logger.debug(`services/userService.js - tokenUtil - ${JSON.stringify(tokenResult)}`);
+
+      response = {
+        userId: selectedUserInfo.userId,
+        role: selectedUserInfo.role,
+        token: tokenResult,
+      };
     } catch (err) {
       logger.error(`services/userService.js - tokenUtil - ${err}`);
       return new Promise((resolve, reject) => {
@@ -84,7 +91,7 @@ const userService = {
     }
 
     return new Promise((resolve, reject) => {
-      resolve(tokenResult);
+      resolve(response);
     });
   },
 };
