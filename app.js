@@ -10,8 +10,11 @@ const models = require('./models/index');
 const logger = require('./lib/logger');
 
 dotenv.config();
+const { NODE_ENV, PORT, LOGGER_LEVEL } = process.env;
+console.log('env:', NODE_ENV, PORT, LOGGER_LEVEL);
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 
 const app = express();
 logger.info('app start');
@@ -30,6 +33,7 @@ app.use(bodyParser.json());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/login', authRouter);
 
 // DB 연결 확인 및 table 생성
 models.sequelize.authenticate().then(() => {
