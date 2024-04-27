@@ -32,7 +32,7 @@ module.exports = class User extends Sequelize.Model {
       },
     }, {
       sequelize,
-      underscored: true,
+      underscored: false,
       timestamps: true,
       paranoid: true,
     });
