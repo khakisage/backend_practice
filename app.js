@@ -16,6 +16,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const productRouter = require('./routes/product');
+const categoryRouter = require('./routes/category');
 
 const app = express();
 logger.info('app start');
@@ -36,6 +37,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', authRouter);
 app.use('/product', productRouter);
+app.use('/category', categoryRouter);
 
 // DB 연결 확인 및 table 생성
 models.sequelize.authenticate().then(() => {

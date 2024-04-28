@@ -7,6 +7,7 @@ module.exports = class Category extends Sequelize.Model {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
+        primaryKey: true,
       },
       name: {
         type: Sequelize.STRING(20),
@@ -14,9 +15,16 @@ module.exports = class Category extends Sequelize.Model {
       },
     }, {
       sequelize,
-      underscored: true,
+      underscored: false,
       timestamps: true,
       paranoid: true,
+    });
+  }
+
+  static associate(db) {
+    db.Category.hasMany(db.Product, {
+      foreignKey: { name: 'categoryId', as: 'Products' },
+      sourceKey: 'id',
     });
   }
 };
