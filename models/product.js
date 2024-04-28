@@ -32,9 +32,19 @@ module.exports = class Product extends Sequelize.Model {
       },
     }, {
       sequelize,
-      underscored: true,
+      underscored: false,
       timestamps: true,
       paranoid: true,
     });
+  }
+
+  static associate(db) {
+    db.Product.belongsTo(db.Category, {
+      foreignKey: { name: 'categoryId', as: 'Category' },
+    });
+  }
+
+  static getIncludeAttributes() {
+    return ['id', 'name', 'price', 'stock', 'description', 'imageUrl'];
   }
 };
