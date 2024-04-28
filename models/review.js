@@ -7,6 +7,7 @@ module.exports = class Review extends Sequelize.Model {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
+        primaryKey: true,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -28,6 +29,15 @@ module.exports = class Review extends Sequelize.Model {
       underscored: true,
       timestamps: true,
       paranoid: true,
+    });
+  }
+
+  static associate(db) {
+    db.Review.belongsTo(db.User, {
+      foreignKey: { name: 'userId', allowNull: false },
+    });
+    db.Review.belongsTo(db.Product, {
+      foreignKey: { name: 'productId', allowNull: false },
     });
   }
 };
