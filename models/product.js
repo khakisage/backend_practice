@@ -42,6 +42,9 @@ module.exports = class Product extends Sequelize.Model {
     db.Product.belongsTo(db.Category, {
       foreignKey: { name: 'categoryId', as: 'Category' },
     });
+    db.Product.hasMany(db.Review, {
+      foreignKey: { name: 'productId', allowNull: false },
+    });
   }
 
   static getIncludeAttributes() {

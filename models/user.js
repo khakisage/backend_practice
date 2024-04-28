@@ -37,4 +37,10 @@ module.exports = class User extends Sequelize.Model {
       paranoid: true,
     });
   }
+
+  static associate(db) {
+    db.User.hasMany(db.Review, {
+      foreignKey: { name: 'userId', allowNull: false },
+    });
+  }
 };
