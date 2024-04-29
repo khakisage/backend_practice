@@ -11,6 +11,8 @@ module.exports = class User extends Sequelize.Model {
       },
       userId: {
         type: Sequelize.STRING(15),
+        allowNull: false,
+        foreignKey: true,
       },
       password: {
         type: Sequelize.STRING(500),
@@ -22,9 +24,6 @@ module.exports = class User extends Sequelize.Model {
       },
       phone: {
         type: Sequelize.STRING(11),
-      },
-      address: {
-        type: Sequelize.STRING(100),
       },
       role: {
         type: Sequelize.STRING(20),
@@ -40,6 +39,12 @@ module.exports = class User extends Sequelize.Model {
 
   static associate(db) {
     db.User.hasMany(db.Review, {
+      foreignKey: { name: 'userId', allowNull: false },
+    });
+    db.User.hasMany(db.Address, {
+      foreignKey: { name: 'id', allowNull: false },
+    });
+    db.User.hasOne(db.Cart, {
       foreignKey: { name: 'userId', allowNull: false },
     });
   }

@@ -1,5 +1,4 @@
-const express = require('express');
-const userService = require('../services/userService');
+const express = require('express'); const userService = require('../services/userService');
 const logger = require('../lib/logger');
 
 const router = express.Router();
@@ -17,7 +16,14 @@ router.post('/', async (req, res, next) => {
       password: req.body.password,
       email: req.body.email,
       phone: req.body.phone,
-      address: req.body.address,
+      address: {
+        name: req.body.address.name,
+        postCode: req.body.address.postCode,
+        address1: req.body.address.address1,
+        address2: req.body.address.address2,
+        address3: req.body.address.address3,
+        userId: req.body.userId,
+      },
       role: req.body.role,
     };
     logger.info(`routes/users.js - ${{ reqParams: JSON.stringify(params) }}`);

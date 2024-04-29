@@ -2,27 +2,28 @@ const logger = require('../lib/logger');
 const userDao = require('../dao/userDao');
 const hashUtil = require('../lib/hashUtil');
 const tokenUtil = require('../lib/tokenUtil');
+const addressDao = require('../dao/addressDao');
+const cartDao = require('../dao/cartDao');
 
 const userService = {
   // 사용자 생성
   async reg(params) {
     let inserted = null;
+    let insertedAddress = null;
+    let insertedCart = null;
     let hashPassword = null;
     try {
       hashPassword = await hashUtil.makePasswordHash(params.password);
-      logger.debug(`services/userService.js - hash - ${JSON.stringify(params.password)}`);
-    } catch (err) {
-      logger.error(`services/userService.js - hash - ${err}`);
-      return new Promise((resolve, reject) => {
-        reject(err);
-      });
-    }
-    const newParams = {
-      ...params,
-      password: hashPassword,
-    };
-    try {
-      inserted = await userDao.insert(newParams);
+      logger.debug(`services/userService.js - hash - ${JSON.stringify(hashPassword)}`);
+
+      inserted = await userDao.insert({ ...params, password: hashPassword });
+      logger.debug(`services/userService.js - insert - ${JSON.stringify(inserted)}`);
+
+      insertedAddress = await addressDao.insertAddress({ ...params.address, userId: inserted.id });
+      logger.debug(`services/userService.js - insertAddress - ${JSON.stringify(insertedAddress)}`);
+
+      insertedCart = await cartDao.insertCart({ userId: inserted.id, productId: [] });
+      logger.debug(`services/userService.js - insertCart - ${JSON.stringify(insertedCart)}`);
       logger.debug(`services/userService.js - insert - ${JSON.stringify(inserted)}`);
     } catch (err) {
       logger.error(`services/userService.js - insert - ${err}`);

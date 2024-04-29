@@ -26,7 +26,7 @@ module.exports = class Review extends Sequelize.Model {
       },
     }, {
       sequelize,
-      underscored: true,
+      underscored: false,
       timestamps: true,
       paranoid: true,
     });
