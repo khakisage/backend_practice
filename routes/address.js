@@ -60,7 +60,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   try {
     const params = {
-      userId: req.query.userId,
+      userId: req.params.id,
     };
     logger.info(`routes/address.js - getAllAddress - ${{ reqParams: JSON.stringify(params) }}`);
     res.status(200).json(await addressService.getAllAddress(params));
