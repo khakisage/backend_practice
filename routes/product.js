@@ -1,11 +1,12 @@
 const express = require('express');
 const productService = require('../services/productService');
 const logger = require('../lib/logger');
+const { isLoggedIn } = require('../lib/middleware');
 
 const router = express.Router();
 
 // 상품 등록
-router.post('/', async (req, res, next) => {
+router.post('/', isLoggedIn, async (req, res, next) => {
   try {
     const params = {
       name: req.body.name,
@@ -31,6 +32,15 @@ router.post('/', async (req, res, next) => {
       const err = new Error('Not allowed null (categoryId)');
       logger.error(err.toString());
       res.status(500).json({ err: err.toString() });
+    }
+
+    // 여기서 추가적인 권한 검사 수행
+    if (req.tokenUser.role !== '관리자') {
+      console.log(req.tokenUser.role);
+      const err = new Error('관리자만 상품을 등록할 수 있습니다.');
+      logger.error(err.toString());
+      res.status(403).json({ err: err.toString() });
+      return;
     }
 
     const result = await productService.reg(params);

@@ -14,8 +14,13 @@ router.post('/', async (req, res) => {
     logger.info(`routes/auth.js - login - try - ${{ reqParams: JSON.stringify(params) }}`);
 
     // 아이디또는 비번이 없는 경우
-    if (!params.userId || !params.password) {
-      const err = new Error('아이디 또는 비밀번호가 없습니다.');
+    if (!params.userId) {
+      const err = new Error('아이디가 없습니다.');
+      logger.error(err.toString());
+      res.status(400).json({ err: err.toString() });
+    }
+    if (!params.password) {
+      const err = new Error('비밀번호가 없습니다.');
       logger.error(err.toString());
       res.status(400).json({ err: err.toString() });
     }
