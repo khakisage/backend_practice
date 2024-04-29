@@ -7,6 +7,7 @@ module.exports = class Cart extends Sequelize.Model {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
+        primaryKey: true,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -17,9 +18,18 @@ module.exports = class Cart extends Sequelize.Model {
       },
     }, {
       sequelize,
-      underscored: true,
+      underscored: false,
       timestamps: true,
       paranoid: true,
+    });
+  }
+
+  static associate(db) {
+    db.Cart.belongsTo(db.User, {
+      foreignKey: { name: 'userId', allowNull: false },
+    });
+    db.Cart.hasMany(db.Product, {
+      foreignKey: { name: 'productId', allowNull: false },
     });
   }
 };
