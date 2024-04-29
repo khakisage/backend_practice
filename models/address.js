@@ -36,9 +36,15 @@ module.exports = class Address extends Sequelize.Model {
       },
     }, {
       sequelize,
-      underscored: true,
+      underscored: false,
       timestamps: true,
       paranoid: true,
+    });
+  }
+
+  static associate(db) {
+    db.Address.belongsTo(db.User, {
+      foreignKey: { name: 'id', allowNull: false },
     });
   }
 };
